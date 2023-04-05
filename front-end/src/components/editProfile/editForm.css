@@ -1,0 +1,9 @@
+.Profile-img{
+    width: 280px;
+    display: flex;
+   margin-left: 45px;
+}
+input{
+    border: solid #3e75d9;
+    border-radius: 15;
+}

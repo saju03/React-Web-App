@@ -1,3 +1,4 @@
+const adminModel = require("../Models/adminModel")
 const userModel = require("../Models/userModel")
 const jwt = require('jsonwebtoken')
 const maxAge = 60*60
@@ -72,4 +73,94 @@ module.exports.login = async (req,res,next)=>{
         const errors = handelErrors(error)
         res.json({errors,created:false})
     }
+}
+
+module.exports.editProfile = (req,res,next)=>{
+
+    
+    const token = req.cookies.jwt;
+    
+    if(token){
+         jwt.verify(token,'123asd',
+         async (err,decodedToken)=>{
+            if(err){
+
+            }
+            else{
+                const user = await userModel.findById(decodedToken.id);
+                if (user){
+                userModel.findByIdAndUpdate(decodedToken.id,{profileImg:req.files[0].filename}).then((result)=>{
+                        if(result){
+                          
+                                res.status(200)
+                                res.json({profileImg:req.files[0].filename,status:true})
+                         
+                        }
+                    })
+                }
+            }
+         })
+    }
+}
+
+module.exports.Adminlogin = async (req,res,next)=>{
+
+
+
+    try {
+        const {email,password } = req.body
+        const admin = await adminModel.login(email,password)
+        const token = createToken(admin._id)
+   
+          res.cookie('adminjwt',token,{
+            withCrdentials:true,
+            httpOnly:false,
+            maxAge:maxAge*1000         
+        });
+       
+        res.status(201).json({admin:admin._id,created:true,adminjwt:token})
+        
+
+       
+    } catch (error) {
+        console.log(error);
+        const errors = handelErrors(error)
+        res.json({errors,created:false})
+    }
+
+
+    
+}
+
+module.exports.getUserDatas = async( req,res,next)=>{
+// jwt verification pending 
+const data = await userModel.find();
+if(data){
+    
+    res.json({data,status:true})
+}
+
+}
+
+module.exports.updateUser = async (req,res,next)=>{
+    // jwt verification pending 
+  const {name,email,id} = req.body;
+
+    let data = await userModel.findByIdAndUpdate(id,{name:name,email:email})
+
+   if(data){
+    res.json({status:true})
+   }
+   
+}
+module.exports.deleteUser = async (req,res,next)=>{
+    // jwt verification pending 
+  const {id} = req.body;
+
+    let data = await userModel.findByIdAndDelete(id)
+
+   if(data){
+    res.json({status:true})
+   }
+   
 }

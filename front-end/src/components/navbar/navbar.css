@@ -17,3 +17,9 @@
     color: black;
     
 }
+.editButton{
+position: fixed;
+right: 100px;
+margin: 10px;
+height: 30px;
+}

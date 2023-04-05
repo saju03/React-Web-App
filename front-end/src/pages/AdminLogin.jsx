@@ -1,63 +1,60 @@
 import React,{useState, useEffect} from 'react'
-import { Link, useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
-import { ToastContainer,toast } from 'react-toastify';
+
 import { useCookies } from 'react-cookie';
-function Login() {
+function AdminLogin() {
   const navigate = useNavigate()
   const [values,setValues ] = useState({
     email:'',
     password:'',
 });
 
-
-
 const [cookies,setCookies,removeCookie]= useCookies([])
-
-const verifyUser = async()=>{
-
-
- if(cookies.jwt){
-   navigate('/')
-   const {data} = await axios.post('http://localhost:4000',{},{withCredentials:true})
- if(!data.status){
-   removeCookie('jwt')
-   navigate('/login') 
- }
- }
-
-}
-
 useEffect(()=>{
+  const verifyUser = async()=>{
+
+ 
+   if(cookies.adminjwt){
+     navigate('/admin')
+     const {data} = await axios.post('http://localhost:4000/admin',{},{withCredentials:true})
+     
+        if(!data.status){
+        removeCookie('adminjwt')
+        navigate('admin/login') 
+   }
+
+   }
+  
+  }
   verifyUser();
-})
+},[])
 
 
 const handelSubmit = async (e)=>{
-
     e.preventDefault();
     try {
-  
-      const { data } = await axios.post('http://localhost:4000/login',{
+      const { data } = await axios.post('http://localhost:4000/admin/login',{
         ...values
       })
 
       if (data) {
         
-       console.log(data);
+      console.log(data);
         if (data.errors) {
        
-          const { email, password,name } = data.errors;
-          if (name){ generateError(name)}
-          else if (password) {generateError(password)}
+          const { email, password } = data.errors;
+         
+           if (password) {generateError(password)}
           else if (email){generateError(email)}
           
         
         }
         else {
-          navigate('/')
-          console.log(cookies);
-          document.cookie=`jwt = ${data.jwt}`
+       
+          navigate('/admin')
+          document.cookie=`adminjwt=${data.adminjwt}`
+          
           }
       }
     } catch (error) {
@@ -66,8 +63,8 @@ const handelSubmit = async (e)=>{
 }
   return (
     <div className='container'>
-        <h2>Login to Your Account</h2>
-        <form  onSubmit={handelSubmit}>
+        <h2>Admin</h2>
+        <form  onSubmit={(e)=>{handelSubmit(e)}}>
             <div>
                 <label htmlFor="email">email</label>
                 <input type="email" name='email' placeholder='email' onChange={(e)=>setValues({...values,[e.target.name]:e.target.value})}/>
@@ -77,13 +74,10 @@ const handelSubmit = async (e)=>{
                 <input type="password" name='password' placeholder='password' onChange={(e)=>setValues({...values,[e.target.name]:e.target.value})}/>
             </div>
             <button type='submit'>Submit</button>
-            <span>Don't have an account<Link to='/register'>Register</Link></span>
-
+          
         </form>
-
-        <ToastContainer/>
     </div>
   )
 }
 
-export default Login
+export default AdminLogin

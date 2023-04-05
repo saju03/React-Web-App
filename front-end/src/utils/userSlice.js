@@ -5,19 +5,21 @@ const userSlice = createSlice({
     initialState:{
         name:'',
         email:'',
-        profilePic:''
+        profileImg:''
        
     },
     reducers:{
          userLogin:(state,action)=>{
-            state.email = action.payload
+            console.log(action.payload);
            
-         },
-         userLogout:(state,action)=>{
+            state.name = action.payload.user
+            state.email = action.payload.email
+           state.profileImg = action.payload.profileImg
             
          }
+         
     }
 }) 
-export const {userLogin,userLogout} = userSlice.actions;
+export const {userLogin} = userSlice.actions;
 
 export default userSlice.reducer;

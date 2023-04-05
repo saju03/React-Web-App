@@ -15,16 +15,29 @@
     "react": "^18.2.0",
     "react-cookie": "^4.1.1",
     "react-dom": "^18.2.0",
+    "react-dropzone": "^14.2.3",
+    "react-file-base64": "^1.0.3",
+    "react-images-uploading": "^3.1.7",
     "react-redux": "^8.0.5",
     "react-router": "^6.9.0",
     "react-router-dom": "^6.9.0",
-    "react-toastify": "^9.1.2"
+    "react-toastify": "^9.1.2",
+    "reactjs-popup": "^2.0.5",
+    "semantic-ui-react": "^2.1.4"
   },
   "devDependencies": {
     "assert": "^2.0.0",
+    "browserify-zlib": "^0.2.0",
     "buffer": "^5.7.1",
     "console-browserify": "^1.2.0",
+    "crypto-browserify": "^3.12.0",
+    "events": "^3.3.0",
+    "os-browserify": "^0.3.0",
+    "path-browserify": "^1.0.1",
     "process": "^0.11.10",
+    "querystring-es3": "^0.2.1",
+    "stream-http": "^3.2.0",
+    "url": "^0.11.0",
     "util": "^0.12.5"
   }
 }
